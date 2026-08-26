@@ -1,17 +1,21 @@
 {
-  "builds": [
-    {
-      "id": "example-build",
-      "name": "Example Build",
-      "description": "Пример сборки. Опиши что включено, какие моды используются и т.д.",
-      "author": "Author",
-      "download_url": "https://example.com/download",
-      "images": [
-        "https://example.com/screenshot1.png",
-        "https://example.com/screenshot2.png"
-      ],
-      "mods_count": 10,
-      "tags": ["performance", "vanilla+"]
+  "id": "eden-ring-reforked",
+  "name": "Eden Ring Reforked",
+  "description": "Порт оригинального мода на новые версии игры. ERR добавит в игру научно-фантастическое измерение, представляющее собой кольцо островов вокруг газового гиганта. Вас ждёт двенадцать новых биомов, особые механики и бескрайние просторы парящих островов, озарённых светом голубой звезды.\n\nЧтобы попасть в измерение, необходимо построить портал и активировать его центральный золотой блок с помощью огнива.",
+  "author": "ErzeKawek",
+  "download_url": "downloads/eden-ring-20.1.21-build.1.zip",
+  "images": [
+    "https://minecraft-inside.ru/uploads/files/2024-02/thumb/eden-ring-img001.png",
+    "https://minecraft-inside.ru/uploads/files/2026-08/thumb/81f97ca48efaa4822f172d71950499668a4814c3.png",
+    "https://minecraft-inside.ru/uploads/files/2026-08/eden-ring.png"
+  ],
+  "videos": [
+    "https://www.youtube.com/watch?v=2JCXlpxeK3I"
+  ],
+  "mods_count": 2,
+  "tags": [
+    "space",
+    "measurement"
     }
   ]
 }
