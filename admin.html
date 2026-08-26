@@ -82,6 +82,12 @@
         </div>
         <button type="button" class="add-img" onclick="addImg('mod-images')">+ Добавить картинку</button>
       </label>
+      <label><span>Видео YouTube (ссылки)</span>
+        <div class="img-list" id="mod-videos">
+          <div class="img-row"><input type="text" placeholder="https://www.youtube.com/watch?v=..."><button class="img-remove" onclick="removeImg(this)">&times;</button></div>
+        </div>
+        <button type="button" class="add-img" onclick="addImg('mod-videos')">+ Добавить видео</button>
+      </label>
       <button onclick="generateMod()">Сгенерировать JSON</button>
     </div>
 
@@ -110,6 +116,12 @@
           <div class="img-row"><input type="text" placeholder="https://i.imgur.com/..."><button class="img-remove" onclick="removeImg(this)">&times;</button></div>
         </div>
         <button type="button" class="add-img" onclick="addImg('build-images')">+ Добавить картинку</button>
+      </label>
+      <label><span>Видео YouTube (ссылки)</span>
+        <div class="img-list" id="build-videos">
+          <div class="img-row"><input type="text" placeholder="https://www.youtube.com/watch?v=..."><button class="img-remove" onclick="removeImg(this)">&times;</button></div>
+        </div>
+        <button type="button" class="add-img" onclick="addImg('build-videos')">+ Добавить видео</button>
       </label>
       <button onclick="generateBuild()">Сгенерировать JSON</button>
     </div>
@@ -188,6 +200,7 @@
         author: val('mod-author') || 'Unknown',
         download_url: val('mod-url') || '',
         images: getImages('mod-images'),
+        videos: getImages('mod-videos'),
         tags: tags(val('mod-tags'))
       };
       showResult(JSON.stringify(obj, null, 2));
@@ -216,6 +229,7 @@
         author: val('build-author') || 'Unknown',
         download_url: val('build-url') || '',
         images: getImages('build-images'),
+        videos: getImages('build-videos'),
         mods_count: parseInt(val('build-count')) || 0,
         tags: tags(val('build-tags'))
       };
