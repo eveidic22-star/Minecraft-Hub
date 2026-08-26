@@ -1,0 +1,5 @@
+@echo off
+echo Starting Minecraft Hub server...
+echo Open http://localhost:8080 in your browser
+echo Press Ctrl+C to stop
+powershell -ExecutionPolicy Bypass -Command "$listener = New-Object System.Net.HttpListener; $listener.Prefixes.Add('http://localhost:8080/'); $listener.Start(); Write-Host 'Server running at http://localhost:8080'; while ($listener.IsListening) { $context = $listener.GetContext(); $file = Join-Path '%~dp0' ($context.Request.Url.LocalPath -replace '^/',''); if ($context.Request.Url.LocalPath -eq '/') { $file = Join-Path '%~dp0' 'index.html' }; if (Test-Path $file -PathType Leaf) { $bytes = [IO.File]::ReadAllBytes($file); $ext = [IO.Path]::GetExtension($file); $types = @{'.html'='text/html';'.css'='text/css';'.js'='application/javascript';'.json'='application/json';'.png'='image/png';'.jpg'='image/jpeg'}; $context.Response.ContentType = $types[$ext]; $context.Response.OutputStream.Write($bytes, 0, $bytes.Length) } else { $context.Response.StatusCode = 404 }; $context.Response.Close() }"

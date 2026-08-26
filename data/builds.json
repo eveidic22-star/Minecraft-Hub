@@ -1,0 +1,17 @@
+{
+  "builds": [
+    {
+      "id": "example-build",
+      "name": "Example Build",
+      "description": "Пример сборки. Опиши что включено, какие моды используются и т.д.",
+      "author": "Author",
+      "download_url": "https://example.com/download",
+      "images": [
+        "https://example.com/screenshot1.png",
+        "https://example.com/screenshot2.png"
+      ],
+      "mods_count": 10,
+      "tags": ["performance", "vanilla+"]
+    }
+  ]
+}

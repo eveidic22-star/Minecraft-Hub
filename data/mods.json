@@ -1,0 +1,26 @@
+{
+  "mods": [
+    {
+      "id": "optifine",
+      "name": "OptiFine",
+      "version": "HD U I6",
+      "minecraft_version": "1.20.1",
+      "description": "Улучшает графику и производительность. Поддержка шейдеров, HD текстур и оптимизация FPS.",
+      "author": "sp614x",
+      "download_url": "downloads/OptiFine_1.20.1_HD_U_I6.jar",
+      "images": ["https://i.imgur.com/8QFmwHh.png"],
+      "tags": ["performance", "graphics"]
+    },
+    {
+      "id": "sodium",
+      "name": "Sodium",
+      "version": "0.5.13",
+      "minecraft_version": "1.20.1",
+      "description": "Мод для значительного увеличения FPS. Работает через Fabric Loader.",
+      "author": "CaffeineMC",
+      "download_url": "downloads/sodium-fabric-0.5.13+mc1.20.1.jar",
+      "images": ["https://i.imgur.com/uKqKPOD.png"],
+      "tags": ["performance", "client-side"]
+    }
+  ]
+}

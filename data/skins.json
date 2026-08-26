@@ -1,0 +1,13 @@
+{
+  "skins": [
+    {
+      "id": "example-skin",
+      "name": "Example Skin",
+      "username": "Steve",
+      "description": "Пример скина. Вставь UUID или ник игрока для предпросмотра.",
+      "author": "Author",
+      "uuid": "8667ba71b85a45b4c757008b71bf786b",
+      "images": []
+    }
+  ]
+}
