@@ -1,5 +1,4 @@
-builds: [
-    {
+   {
       "id": "vanilla-plus",
       "name": "Vanilla+ Сборка",
       "description": "Сборка для тех, кто любит ванильный Minecraft, но хочет немного улучшений.",
