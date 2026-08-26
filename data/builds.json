@@ -1,6 +1,4 @@
-   }
-  ],
-  builds: [
+builds: [
     {
       "id": "vanilla-plus",
       "name": "Vanilla+ Сборка",
