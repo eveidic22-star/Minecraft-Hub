@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Hub - Добавить контент</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --bg2: #16213e;
+      --card: #0f3460;
+      --accent: #e94560;
+      --text: #eaeaea;
+      --dim: #a0a0b0;
+      --border: #2a2a4a;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+    .container { max-width: 700px; margin: 0 auto; }
+    h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent); }
+    .subtitle { color: var(--dim); margin-bottom: 2rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab { padding: 0.6rem 1.2rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; color: var(--dim); cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }
+    .tab:hover, .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .form { display: none; }
+    .form.active { display: block; }
+    label { display: block; margin-bottom: 1rem; }
+    label span { display: block; margin-bottom: 0.3rem; font-weight: 500; font-size: 0.9rem; }
+    input, textarea { width: 100%; padding: 0.6rem 0.8rem; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: inherit; font-size: 0.9rem; outline: none; }
+    input:focus, textarea:focus { border-color: var(--accent); }
+    textarea { min-height: 80px; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    button { padding: 0.7rem 1.5rem; background: var(--accent); border: none; border-radius: 8px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; }
+    button:hover { background: #ff6b81; }
+    .result { margin-top: 2rem; display: none; }
+    .result.active { display: block; }
+    .result h2 { font-size: 1.1rem; margin-bottom: 0.8rem; }
+    .result-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; position: relative; }
+    .result-box pre { white-space: pre-wrap; word-break: break-all; font-size: 0.85rem; color: var(--dim); }
+    .copy-btn { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.4rem 0.8rem; background: var(--accent); border: none; border-radius: 6px; color: #fff; font-size: 0.8rem; cursor: pointer; }
+    .copy-btn:hover { background: #ff6b81; }
+    .instructions { margin-top: 2rem; background: var(--card); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border); }
+    .instructions h2 { font-size: 1rem; margin-bottom: 1rem; }
+    .instructions ol { padding-left: 1.2rem; color: var(--dim); line-height: 2; }
+    .instructions code { background: var(--bg2); padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Добавить контент</h1>
+    <p class="subtitle">Заполни форму, скопируй JSON и вставь в файл на GitHub</p>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('mod')">Мод</div>
+      <div class="tab" onclick="switchTab('skin')">Скин</div>
+      <div class="tab" onclick="switchTab('build')">Сборка</div>
+    </div>
+
+    <!-- MOD FORM -->
+    <div id="form-mod" class="form active">
+      <label><span>Название</span><input type="text" id="mod-name" placeholder="OptiFine"></label>
+      <div class="row">
+        <label><span>Версия мода</span><input type="text" id="mod-version" placeholder="1.0.0"></label>
+        <label><span>Версия Minecraft</span><input type="text" id="mod-mc" placeholder="1.20.1"></label>
+      </div>
+      <label><span>Автор</span><input type="text" id="mod-author" placeholder="sp614x"></label>
+      <label><span>Описание</span><textarea id="mod-desc" placeholder="Что делает мод..."></textarea></label>
+      <label><span>Ссылка на скачивание (URL или путь к файлу)</span><input type="text" id="mod-url" placeholder="https://... или downloads/file.jar"></label>
+      <label><span>Теги (через запятую)</span><input type="text" id="mod-tags" placeholder="performance, graphics"></label>
+      <label><span>Ссылка на превью-картинку (URL)</span><input type="text" id="mod-img" placeholder="https://i.imgur.com/..."></label>
+      <button onclick="generateMod()">Сгенерировать JSON</button>
+    </div>
+
+    <!-- SKIN FORM -->
+    <div id="form-skin" class="form">
+      <label><span>Название скина</span><input type="text" id="skin-name" placeholder="Cool Skin"></label>
+      <label><span>Ник игрока</span><input type="text" id="skin-username" placeholder="Notch"></label>
+      <label><span>UUID игрока</span><input type="text" id="skin-uuid" placeholder="069a79f4-44e9-4726-a5be-fca90e38aaf5"></label>
+      <label><span>Автор</span><input type="text" id="skin-author" placeholder="Artist"></label>
+      <label><span>Описание</span><textarea id="skin-desc" placeholder="Описание скина..."></textarea></label>
+      <button onclick="generateSkin()">Сгенерировать JSON</button>
+    </div>
+
+    <!-- BUILD FORM -->
+    <div id="form-build" class="form">
+      <label><span>Название сборки</span><input type="text" id="build-name" placeholder="Vanilla+ Pack"></label>
+      <label><span>Автор</span><input type="text" id="build-author" placeholder="Builder"></label>
+      <label><span>Описание</span><textarea id="build-desc" placeholder="Описание сборки..."></textarea></label>
+      <div class="row">
+        <label><span>Кол-во модов</span><input type="number" id="build-count" placeholder="12"></label>
+        <label><span>Ссылка на скачивание</span><input type="text" id="build-url" placeholder="https://..."></label>
+      </div>
+      <label><span>Теги (через запятую)</span><input type="text" id="build-tags" placeholder="vanilla+, performance"></label>
+      <label><span>Ссылка на превью-картинку (URL)</span><input type="text" id="build-img" placeholder="https://i.imgur.com/..."></label>
+      <button onclick="generateBuild()">Сгенерировать JSON</button>
+    </div>
+
+    <div id="result" class="result">
+      <h2>Готовый JSON — скопируй и вставь:</h2>
+      <div class="result-box">
+        <button class="copy-btn" onclick="copyResult()">Копировать</button>
+        <pre id="result-text"></pre>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <h2>Как добавить на сайт:</h2>
+      <ol>
+        <li>Скопируй JSON выше</li>
+        <li>Зайди на GitHub в папку <code>minecraft-site/data/</code></li>
+        <li>Открой файл <code>mods.json</code>, <code>skins.json</code> или <code>builds.json</code></li>
+        <li>Нажми карандашик (Edit)</li>
+        <li>Вставь скопированный JSON перед закрывающей скобкой <code>]</code></li>
+        <li>Нажми <code>Commit changes</code></li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    function switchTab(type) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.form').forEach(f => f.classList.remove('active'));
+      document.getElementById('form-' + type).classList.add('active');
+      document.getElementById('result').classList.remove('active');
+      event.target.classList.add('active');
+    }
+
+    function val(id) { return document.getElementById(id).value.trim(); }
+    function tags(str) { return str.split(',').map(s => s.trim()).filter(Boolean); }
+    function makeId(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+
+    function showResult(text) {
+      document.getElementById('result-text').textContent = text;
+      document.getElementById('result').classList.add('active');
+      document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function generateMod() {
+      var name = val('mod-name'); if (!name) return alert('Введите название');
+      var obj = {
+        id: makeId(name),
+        name: name,
+        version: val('mod-version') || '1.0.0',
+        minecraft_version: val('mod-mc') || '1.20.1',
+        description: val('mod-desc') || '',
+        author: val('mod-author') || 'Unknown',
+        download_url: val('mod-url') || '',
+        images: val('mod-img') ? [val('mod-img')] : [],
+        tags: tags(val('mod-tags'))
+      };
+      showResult(JSON.stringify(obj, null, 2));
+    }
+
+    function generateSkin() {
+      var name = val('skin-name'); if (!name) return alert('Введите название');
+      var obj = {
+        id: makeId(name),
+        name: name,
+        username: val('skin-username') || 'Player',
+        description: val('skin-desc') || '',
+        author: val('skin-author') || 'Unknown',
+        uuid: val('skin-uuid') || '',
+        images: []
+      };
+      showResult(JSON.stringify(obj, null, 2));
+    }
+
+    function generateBuild() {
+      var name = val('build-name'); if (!name) return alert('Введите название');
+      var obj = {
+        id: makeId(name),
+        name: name,
+        description: val('build-desc') || '',
+        author: val('build-author') || 'Unknown',
+        download_url: val('build-url') || '',
+        images: val('build-img') ? [val('build-img')] : [],
+        mods_count: parseInt(val('build-count')) || 0,
+        tags: tags(val('build-tags'))
+      };
+      showResult(JSON.stringify(obj, null, 2));
+    }
+
+    function copyResult() {
+      var text = document.getElementById('result-text').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        document.querySelector('.copy-btn').textContent = 'Скопировано!';
+        setTimeout(function() { document.querySelector('.copy-btn').textContent = 'Копировать'; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
