@@ -32,6 +32,13 @@
     input:focus, textarea:focus { border-color: var(--accent); }
     textarea { min-height: 80px; resize: vertical; }
     .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .img-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .img-row { display: flex; gap: 0.5rem; align-items: center; }
+    .img-row input { flex: 1; }
+    .img-remove { background: none; border: 1px solid var(--border); color: var(--dim); width: 36px; height: 36px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; padding: 0; display: flex; align-items: center; justify-content: center; margin-top: 0; }
+    .img-remove:hover { border-color: var(--accent); color: var(--accent); background: none; }
+    .add-img { background: none; border: 1px dashed var(--border); color: var(--dim); padding: 0.5rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; margin-top: 0.3rem; width: 100%; }
+    .add-img:hover { border-color: var(--accent); color: var(--accent); background: none; }
     button { padding: 0.7rem 1.5rem; background: var(--accent); border: none; border-radius: 8px; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem; transition: background 0.2s; }
     button:hover { background: #ff6b81; }
     .result { margin-top: 2rem; display: none; }
@@ -69,7 +76,12 @@
       <label><span>Описание</span><textarea id="mod-desc" placeholder="Что делает мод..."></textarea></label>
       <label><span>Ссылка на скачивание (URL или путь к файлу)</span><input type="text" id="mod-url" placeholder="https://... или downloads/file.jar"></label>
       <label><span>Теги (через запятую)</span><input type="text" id="mod-tags" placeholder="performance, graphics"></label>
-      <label><span>Ссылка на превью-картинку (URL)</span><input type="text" id="mod-img" placeholder="https://i.imgur.com/..."></label>
+      <label><span>Картинки (ссылки)</span>
+        <div class="img-list" id="mod-images">
+          <div class="img-row"><input type="text" placeholder="https://i.imgur.com/..."><button class="img-remove" onclick="removeImg(this)">&times;</button></div>
+        </div>
+        <button type="button" class="add-img" onclick="addImg('mod-images')">+ Добавить картинку</button>
+      </label>
       <button onclick="generateMod()">Сгенерировать JSON</button>
     </div>
 
@@ -93,7 +105,12 @@
         <label><span>Ссылка на скачивание</span><input type="text" id="build-url" placeholder="https://..."></label>
       </div>
       <label><span>Теги (через запятую)</span><input type="text" id="build-tags" placeholder="vanilla+, performance"></label>
-      <label><span>Ссылка на превью-картинку (URL)</span><input type="text" id="build-img" placeholder="https://i.imgur.com/..."></label>
+      <label><span>Картинки (ссылки)</span>
+        <div class="img-list" id="build-images">
+          <div class="img-row"><input type="text" placeholder="https://i.imgur.com/..."><button class="img-remove" onclick="removeImg(this)">&times;</button></div>
+        </div>
+        <button type="button" class="add-img" onclick="addImg('build-images')">+ Добавить картинку</button>
+      </label>
       <button onclick="generateBuild()">Сгенерировать JSON</button>
     </div>
 
@@ -131,6 +148,29 @@
     function tags(str) { return str.split(',').map(s => s.trim()).filter(Boolean); }
     function makeId(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
 
+    function getImages(containerId) {
+      var imgs = [];
+      document.querySelectorAll('#' + containerId + ' .img-row input').forEach(function(inp) {
+        var v = inp.value.trim();
+        if (v) imgs.push(v);
+      });
+      return imgs;
+    }
+
+    function addImg(containerId) {
+      var row = document.createElement('div');
+      row.className = 'img-row';
+      row.innerHTML = '<input type="text" placeholder="https://i.imgur.com/..."><button class="img-remove" onclick="removeImg(this)">&times;</button>';
+      document.getElementById(containerId).appendChild(row);
+    }
+
+    function removeImg(btn) {
+      var list = btn.closest('.img-list');
+      if (list.children.length > 1) {
+        btn.parentElement.remove();
+      }
+    }
+
     function showResult(text) {
       document.getElementById('result-text').textContent = text;
       document.getElementById('result').classList.add('active');
@@ -147,7 +187,7 @@
         description: val('mod-desc') || '',
         author: val('mod-author') || 'Unknown',
         download_url: val('mod-url') || '',
-        images: val('mod-img') ? [val('mod-img')] : [],
+        images: getImages('mod-images'),
         tags: tags(val('mod-tags'))
       };
       showResult(JSON.stringify(obj, null, 2));
@@ -175,7 +215,7 @@
         description: val('build-desc') || '',
         author: val('build-author') || 'Unknown',
         download_url: val('build-url') || '',
-        images: val('build-img') ? [val('build-img')] : [],
+        images: getImages('build-images'),
         mods_count: parseInt(val('build-count')) || 0,
         tags: tags(val('build-tags'))
       };
