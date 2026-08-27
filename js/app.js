@@ -3,23 +3,25 @@ const EMBEDDED_DATA = {
     {
       "id": "optifine",
       "name": "OptiFine",
-      "version": "HD U I7",
+      "version": "HD U I6",
       "minecraft_version": "1.20.1",
       "description": "Улучшает графику и производительность. Поддержка шейдеров, HD текстур и оптимизация FPS.",
       "author": "sp614x",
       "download_url": "downloads/OptiFine_1.20.1_HD_U_I6.jar",
       "images": ["https://i.imgur.com/8QFmwHh.png"],
+      "videos": [],
       "tags": ["performance", "graphics"]
     },
     {
       "id": "sodium",
       "name": "Sodium",
-      "version": "0.5.8",
+      "version": "0.5.13",
       "minecraft_version": "1.20.1",
       "description": "Мод для значительного увеличения FPS. Работает через Fabric Loader.",
       "author": "CaffeineMC",
       "download_url": "downloads/sodium-fabric-0.5.13+mc1.20.1.jar",
       "images": ["https://i.imgur.com/uKqKPOD.png"],
+      "videos": [],
       "tags": ["performance", "client-side"]
     }
   ],
@@ -45,14 +47,21 @@ const EMBEDDED_DATA = {
   ],
   builds: [
     {
-      "id": "vanilla-plus",
-      "name": "Vanilla+ Сборка",
-      "description": "Сборка для тех, кто любит ванильный Minecraft, но хочет немного улучшений.",
-      "author": "Builder",
-      "download_url": "https://example.com/download",
-      "images": ["https://i.imgur.com/9eZjGKT.png"],
-      "mods_count": 12,
-      "tags": ["vanilla+", "performance"]
+      "id": "eden-ring-reforked",
+      "name": "Eden Ring Reforked",
+      "description": "Порт оригинального мода на новые версии игры. ERR добавит в игру научно-фантастическое измерение, представляющее собой кольцо островов вокруг газового гиганта. Вас ждёт двенадцать новых биомов, особые механики и бескрайние просторы парящих островов, озарённых светом голубой звезды.\n\nЧтобы попасть в измерение, необходимо построить портал и активировать его центральный золотой блок с помощью огнива.",
+      "author": "ErzeKawek",
+      "download_url": "downloads/eden-ring-20.1.21-build.1.zip",
+      "images": [
+        "https://minecraft-inside.ru/uploads/files/2024-02/thumb/eden-ring-img001.png",
+        "https://minecraft-inside.ru/uploads/files/2026-08/thumb/81f97ca48efaa4822f172d71950499668a4814c3.png",
+        "https://minecraft-inside.ru/uploads/files/2026-08/eden-ring.png"
+      ],
+      "videos": [
+        "https://www.youtube.com/watch?v=2JCXlpxeK3I"
+      ],
+      "mods_count": 2,
+      "tags": ["space", "measurement"]
     }
   ]
 };
@@ -67,6 +76,16 @@ function getSkinHeadUrl(uuid) {
 }
 function getSkinBodyUrl(uuid) {
   return 'https://crafatar.com/render/body/' + uuid + '?overlay&size=256';
+}
+
+function getYouTubeId(url) {
+  var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([^&?#]+)/);
+  return m ? m[1] : null;
+}
+
+function youtubeEmbed(url) {
+  var id = getYouTubeId(url);
+  return id ? 'https://www.youtube.com/embed/' + id : null;
 }
 
 async function loadData() {
@@ -258,6 +277,20 @@ function openDetail(category, id) {
           + '<img src="' + esc(url) + '" alt="Gallery" loading="lazy"></div>';
       }).join('')
       + '</div></div>';
+  }
+
+  var videos = item.videos || [];
+  if (videos.length) {
+    html += '<div class="gallery"><h2>Видео</h2><div class="gallery__grid">';
+    videos.forEach(function(url) {
+      var embed = youtubeEmbed(url);
+      if (embed) {
+        html += '<div class="gallery__item" style="cursor:default">'
+          + '<iframe width="100%" height="200" src="' + esc(embed) + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius:8px"></iframe>'
+          + '</div>';
+      }
+    });
+    html += '</div></div>';
   }
 
   container.innerHTML = html;
